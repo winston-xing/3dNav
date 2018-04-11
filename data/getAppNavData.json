@@ -1,0 +1,95 @@
+{
+	"data": [
+		{
+			"mosn": "e80837d8399db75d1647bd5fa7e74748",
+			"alias": "业务系统",
+			"icon": "images/yewu.png",
+			"result": "可用",
+			"group": "分组1"
+		},{
+			"mosn": "b3d86688774d57d88fae601dfd7d04f9",
+			"alias": "业务系统1",
+			"icon": "images/AP998500000.png",
+			"result": "不可用",
+			"group": "分组1"
+			
+		},{
+			"mosn": "611bb1d48a83a76ff83c87c8144839fb",
+			"alias": "业务系统2",
+			"icon": "images/AP998500001.png",
+			"result": "部分可用",
+			"group": "分组1"
+			
+		},{
+			"mosn": "ae14cc7dc42ac4952d8b3a71b71a947b",
+			"alias": "业务系统3",
+			"icon": "images/2.jpg",
+			"result": "不确定",
+			"group": "测试分组"
+		},{
+			"mosn": "85dff98f0e4b9140239b54aad51cbd18",
+			"alias": "业务系统4",
+			"icon": "images/3.jpg",
+			"result": "错误",
+			"group": "测试分组"
+		},{
+			"mosn": "85dff98f0e4b9140239b54aad51cbd18",
+			"alias": "业务系统5",
+			"icon": "images/4.jpg",
+			"result": "不确定",
+			"group": "测试分组"
+		},{
+			"mosn": "85dff98f0e4b9140239b54aad51cbd18",
+			"alias": "业务系统6",
+			"icon": "images/5.jpg",
+			"result": "不确定",
+			"group": "测试分组"
+		},{
+			"mosn": "85dff98f0e4b9140239b54aad51cbd18",
+			"alias": "业务系统7",
+			"icon": "images/6.jpg",
+			"result": "不确定",
+			"group": "测试分组"
+		},{
+			"mosn": "85dff98f0e4b9140239b54aad51cbd18",
+			"alias": "业务系统8",
+			"icon": "images/7.jpg",
+			"result": "不确定",
+			"group": "测试分组"
+		},{
+			"mosn": "85dff98f0e4b9140239b54aad51cbd18",
+			"alias": "业务系统9",
+			"icon": "images/8.jpg",
+			"result": "不确定",
+			"group": "我的分组"
+			
+		},{
+			"mosn": "85dff98f0e4b9140239b54aad51cbd18",
+			"alias": "业务系统10",
+			"icon": "images/9.jpg",
+			"result": "不确定",
+			"group": "我的分组"
+		},{
+			"mosn": "85dff98f0e4b9140239b54aad51cbd18",
+			"alias": "业务系统11",
+			"icon": "images/10.jpg",
+			"result": "不确定",
+			"group": "我的分组"
+		},{
+			"mosn": "85dff98f0e4b9140239b54aad51cbd18",
+			"alias": "业务系统12",
+			"icon": "images/11.jpg",
+			"result": "不确定",
+			"group": "我的分组"
+		},{
+			"mosn": "85dff98f0e4b9140239b54aad51cbd18",
+			"alias": "业务系统13",
+			"icon": "images/12.jpg",
+			"result": "不确定",
+			"group": "我的分组"
+			
+		}
+	],
+	"status": "success",
+	"url": "https://www.baidu.com"
+}
