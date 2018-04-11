@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>应用导航</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="css/demo.css" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" href="css/myslick.css">
+		<link rel="stylesheet" type="text/css" href="components/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="components/sweetalert/sweet-alert.css">
+		<link rel="stylesheet" type="text/css" href="components/fontawesome/css/font-awesome.min.css">
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			.slick {
+				margin: 0 auto;
+				text-align: center;
+				margin-top: 20px;/* 2017-04-11*/
+				background: #EAEBF0;
+				position: relative;
+				border: 1px solid #D6D9DC;
+				width: 92%;
+			}
+			
+			.slick img {
+				margin: 0 auto;
+				text-align: center;
+				padding: 8px 3px 3px 3px;
+				width: 95%;
+				height: 86px;
+				cursor: pointer;
+				display: block;
+			}
+			
+			.slick .botomTitle {
+				background: #000;
+				color: #FFF;
+				position: absolute;
+				right: 4px;
+				bottom: 4px;
+				z-index: 20;
+				font-family: "宋体";
+				font-size: 12px;
+				line-height: 16px;
+				padding: 0 5px;
+			}
+			
+			.slick-prev:before,
+			.slick-next:before {
+				position: absolute;
+				left: 0;
+				top: 1px;
+				color: black;
+			}
+			
+			.slick-prev {
+				left: -35px;
+			}
+			
+			.slick-next {
+				right: -35px;
+			}
+			
+			.slick-dots {
+				bottom: -35px;
+			}
+			
+			.contentArea {
+				margin: 0 38%;
+				/*background: #96c;*/
+			    height: 50px;
+			}
+			
+			.leftPanel {
+				width: 38%;
+				float: left;
+				/*background: #FF0000;*/
+				height: 50px;
+			}
+			
+			.rightPanel {
+				width: 38%;
+				float: right;
+				/*background: #0000FF;*/
+				height: 50px;
+			}
+			
+			.form-control {
+				padding: 0px;
+				border-top-left-radius: 0px;
+				border-top-right-radius: 4px;
+				border-bottom-left-radius: 0px;
+				border-bottom-right-radius: 4px;
+				line-height:50px;
+			}
+			
+			.btn {
+				border-top-left-radius: 4px;
+				border-top-right-radius: 0px;
+				border-bottom-left-radius: 4px;
+				border-bottom-right-radius: 0px;
+				margin-bottom: 6px; 
+			}
+			
+			.firfoxAndIE_div {
+				border: 1px solid #5599FF
+			}
+			
+			.jqs_tooltip {
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				visibility: hidden;
+				background: rgb(0, 0, 0) transparent;
+				background-color: rgba(0, 0, 0, 0.6);
+				filter: progid: DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+				-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+				color: white;
+				font: 12px arial, san serif;
+				text-align: left;
+				white-space: nowrap;
+				padding: 1px;
+				border: 0px solid white;
+				z-index: 999999;
+				-moz-box-sizing: content-box;
+				box-sizing: content-box;
+				-webkit-box-sizing: content-box;
+			}
+			.myitem {
+	position: relative;
+	float: left;
+	height: 100%;
+	width: 25%; /*写给不支持calc()的浏览器*/
+	width: -moz-calc(25% -   10px *   0.25);
+	width: -webkit-calc(25% -   10px *   0.25);
+	width: calc(25% -   10px *   0.25);
+	margin-right: calc(1px*4 /2);
+	/*margin-bottom: calc(1px*4 /2);*/
+}
+		</style>
+		<script type="text/javascript" src="js/modernizr.custom.53451.js"></script>
+		<script src="components/jquery/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery.gallery.js"></script>
+		<script src="js/myslick.js"></script>
+		<script src="components/bootstrap/js/bootstrap.min.js"></script>
+		<script src="components/sweetalert/sweet-alert.min.js"></script>
+		<script src="components/util/json2.js" type="text/javascript"></script>
+		<script src="components/util/chroma.min.js" type="text/javascript"></script>
+		
+		<script type="text/javascript">
+			var glabolData = [];
+			var glabolUrl = '';
+			var ga;
+			var slickObj;
+			var searchPattern = 'all'; //搜索模式 all|part
+			var slickAllObjs = [];
+			var imgWidth, imgHeight;
+			//var model = '2'
+			var _almPie;
+			var _ctPie;
+			var __amAvailColors = {
+				"不可用": "#FF0000",
+				"不确定": "#999999",
+				"可用": "#4E9A57",
+				"部分可用": "#ECE10A",
+				"错误": "#AA00AA"};
+
+
+var __alarmLevels = [{"levelColor": "#999999",
+				"levelID": -1,
+				"levelName": "未知",
+				"levelSound": "",
+				"remark": ""
+			}, {
+				"levelColor": "#00FF00",
+				"levelID": 0,
+				"levelName": "正常",
+				"levelSound": "",
+				"remark": "正常"
+			}, {
+				"levelColor": "#3C3CFF",
+				"levelID": 1,
+				"levelName": "轻微",
+				"levelSound": "msg.mp3",
+				"remark": "轻微"
+			}, {
+				"levelColor": "#ECE10A",
+				"levelID": 2,
+				"levelName": "警告",
+				"levelSound": "ding.mp3",
+				"remark": "警告"
+			}, {
+				"levelColor": "#FF9900",
+				"levelID": 3,
+				"levelName": "次要",
+				"levelSound": "phone.mp3",
+				"remark": "次要"
+			}, {
+				"levelColor": "#FF00FF",
+				"levelID": 4,
+				"levelName": "主要",
+				"levelSound": "winks.mp3",
+				"remark": "主要"
+			}, {
+				"levelColor": "#FF0000",
+				"levelID": 5,
+				"levelName": "严重",
+				"levelSound": "system.mp3",
+				"remark": "严重"
+			}];
+			$(function() {
+				var a1 = navigator.userAgent;
+				var yesIE11 = a1.search(/Trident/i);
+				if(yesIE11 > 0) {
+					$("#searchParam").css('margin-top', '2px');
+					$("#searchParam").css('margin-bottom', '8px');
+				}
+				resize();
+
+				initData();
+                
+               
+				$(document).on("click", ".slick-slide", debounce(function() {
+					var index = $(".slick-slide").index(this);
+					//console.log("index=" + index)
+					var obj = $(".dg-wrapper a").eq(index);
+					var mosn = obj.attr("mosn");
+					var alias = obj.attr("alias");
+					obj.siblings().removeAttr("target").attr("href", "JavaScript:void(0)");
+					//console.log("mosn=" + mosn);
+					obj.attr("href", glabolUrl.replace("${MOSN}", mosn).replace("${alias}", alias));
+					obj.attr("target", "_blank");
+					ga.gallery('randomAccess', index);
+					if(!(a1.indexOf("Chrome") > -1)) {
+						var pobj = $(this);
+						pobj.addClass('firfoxAndIE_div').siblings().removeClass('firfoxAndIE_div')
+					}
+					
+                     
+                     $('#result span').text(obj.attr("result")).css('color',getColorByVal(obj.attr("result")));
+                      $('#group span').text(obj.attr("group"))
+				}, 200));
+				$(document).click(function(e) {
+
+					var obj = $(e.target)
+					if(obj.hasClass('slick-active')) {
+						return;
+					} else {
+						$(".firfoxAndIE_div").removeClass('firfoxAndIE_div')
+					}
+				})
+				$('#searchParam').change(search).keyup(function() {
+					//$(this).change();
+				});
+				$(document).on("click", ".dg-left", debounce(function() {
+					setUrl($(this));
+					ga.gallery('navigate', 'prev');
+
+				}, 200));
+				$(document).on("click", ".dg-right", debounce(function() {
+
+					setUrl($(this));
+					ga.gallery('navigate', 'next');
+
+				}, 200));
+
+				$(document).on("click", ".btn", debounce(function() {
+					var spanObj = $(this).find('span');
+					if(spanObj.hasClass('glyphicon-search')) {
+						$("#searchParam").css('border', '1px solid #cccccc');
+						$("#searchParam").animate({ width: 250 }, 500)
+						spanObj.removeClass('glyphicon-search').addClass('glyphicon-remove')
+						$(this).attr("title", "点击关闭搜索框")
+					} else {
+						if($("#searchParam").val()) {
+							$("#searchParam").val("")
+							search();
+						}
+						$("#searchParam").animate({ width: 0 }, 500, function() {
+							$("#searchParam").css('border', 'none');
+						})
+						spanObj.removeClass('glyphicon-remove').addClass('glyphicon-search')
+						$(this).attr("title", "点击打开搜索框")
+					}
+
+				}, 200));
+
+				$("#searchParam").css('border', 'none');
+				$("#searchParam").css('width', '0px');
+
+
+			});
+
+			function setUrl(obj) {
+				var centerObj = $('.dg-center');
+				var mosn = centerObj.attr("mosn");
+				var alias = centerObj.find('div').text();
+				console.log("mosn=" + mosn + "alias=" + alias)
+				centerObj.removeAttr("target").attr("href", 'JavaScript:void(0)');
+				obj.attr("href", glabolUrl.replace("${MOSN}", mosn).replace("${alias}", alias)).attr("target", "_blank");
+			}
+			//防抖动函数
+			function debounce(fn, delay) {
+				var timer = null; // 声明计时器
+				return function() {
+					var context = this,
+						args = arguments;
+					clearTimeout(timer);
+					timer = setTimeout(function() {
+						fn.apply(context, args);
+					}, delay);
+				};
+			}
+
+			function initData() {
+
+				$.ajax({
+					cache: false,
+					type: "GET",
+					//url: getContextPath() + "/test/3DNav/data/getAppNavData.json",
+					url: "http://127.0.0.1:8020/3dNav/data/getAppNavData.json",
+					dataType: "json",
+					success: function(data) {
+						setResult(data);
+					},
+					error: function(e) {
+						console.log(e)
+						//swal("错误", "请检查struts配置！" + JSON.stringify(e), "error");
+					}
+				});
+			}
+
+			function setResult(data, loadingIndicator) {
+
+				if(data && data.status == 'success') {
+					var arr = data.data;
+					glabolUrl = data.url;
+
+					glabolData = arr;
+					var topItem = ''
+					var bottomItem = ''
+					var obj = null;
+					var topContainer = $(".dg-wrapper");
+					var bottomContainer = $(".slick");
+					var myColor;
+					var myIcon;
+					var fmargin_left = ''
+					var smargin_left = ''
+					for(var i = 0; i < arr.length; ++i) {
+						obj = arr[i]
+
+//						if(model == '2') {
+							if(obj.result == '可用') {
+								myColor = "#4E9A57;"
+								myIcon = "fa fa-smile-o fa-lg"
+								fmargin_left = '8px'
+								smargin_left = '15px'
+							} else if(obj.result == '部分可用') {
+								myColor = "#ECE10A;"
+								myIcon = "fa fa-meh-o fa-lg"
+								fmargin_left = '0px'
+								smargin_left = '0px'
+							} else if(obj.result == '不确定') {
+								myColor = "#999999;"
+								myIcon = "fa fa-ban fa-lg"
+								fmargin_left = '2px'
+								smargin_left = '2px'
+							} else if(obj.result == '不可用') {
+								myColor = "#FF0000;"
+								myIcon = "fa fa-frown-o fa-lg"
+								fmargin_left = '2px'
+								smargin_left = '2px'
+							} else {
+								myColor = "#AA00AA"
+								myIcon = "fa fa-wrench fa-lg"
+								fmargin_left = '8px'
+								smargin_left = '15px'
+							}
+
+							bottomItem = '<div  style="background: '+chroma(getColorByVal(obj.result)).alpha(0.4).css()+';"><img src="' + obj.icon + '"><div class="botomTitle" ><span class="'+myIcon+'" style="color:'+myColor+';font-weight:bold;"></span><span >' + obj.alias + '</span></div></div>'
+							topItem = '<a mosn = "' + obj.mosn + '"  alias ="' + obj.alias + '"  result="' + obj.result+'"  group= "' + obj.group+'" href="JavaScript:void(0)"  ><img src="' + obj.icon + '" alt="image01" width="' + imgWidth + '" height="' + imgHeight + '"><div >' + obj.alias + '</div></a>'
+						
+						topContainer.append(topItem)
+						bottomContainer.append(bottomItem)
+					}
+					var reWidth = document.documentElement.clientWidth;
+					//console.log("reWidth0="+reWidth)
+					ga = $('#dg-container').gallery({ reWidth: reWidth });
+					slickObj = $('.slick').slick({
+						dots: true,
+						slidesToShow: 8, //默认是1366*768分辨率下的显示个数
+						slidesToScroll: 8,
+						infinite: false,
+						responsive: [{
+								breakpoint: 1920,
+								settings: {
+									slidesToShow: 14,
+									slidesToScroll: 14,
+									infinite: false,
+									dots: true
+								}
+							}, {
+								breakpoint: 1600,
+								settings: {
+									slidesToShow: 12,
+									slidesToScroll: 12,
+									infinite: false,
+									dots: true
+								}
+							}, {
+								breakpoint: 1440,
+								settings: {
+									slidesToShow: 10,
+									slidesToScroll: 10,
+									infinite: false,
+									dots: true
+								}
+							}, {
+								breakpoint: 1366,
+								settings: {
+									slidesToShow: 8,
+									slidesToScroll: 8,
+									infinite: false,
+									dots: true
+								}
+							}, {
+								breakpoint: 1024,
+								settings: {
+									slidesToShow: 6,
+									slidesToScroll: 6,
+									infinite: false,
+									dots: true
+								}
+							},
+							{
+								breakpoint: 600,
+								settings: {
+									slidesToShow: 4,
+									slidesToScroll: 4,
+									infinite: false,
+									dots: true
+								}
+							},
+							{
+								breakpoint: 480,
+								settings: {
+									slidesToShow: 2,
+									slidesToScroll: 2,
+									infinite: false,
+									dots: true
+								}
+							}
+						]
+
+					});
+					var firstObj = arr[0]
+					setFirstObjPro(firstObj);
+
+					resize()
+                   
+				} else {
+					//swal("错误", "获取消息中转站详情失败！" + data.errMsg, "error");
+					console.log("错误")
+				}
+			}
+
+			function setFirstObjPro(firstObj) {
+				console.log("glabolUrl="+glabolUrl.indexOf("${MOSN}"))
+				$(".dg-wrapper a").eq(0).attr("target", "_blank").attr("href", glabolUrl.replace("${MOSN}", firstObj.mosn).replace("${alias}", firstObj.alias));
+			}
+
+			function search() {
+				var selectEntities = [];
+				var name;
+				var obj = null;
+				var searchText = $('#searchParam').val();
+				searchText = $.trim(searchText);
+				if(searchText) {
+					if(slickAllObjs.length == 0) {
+						var cloneArr = $('.slick-slide');
+						slickAllObjs = copyArray(cloneArr);
+					}
+
+					var size = glabolData.length;
+					for(var i = 0; i < size; ++i) {
+						obj = glabolData[i];
+						name = obj.alias;
+
+						if(typeof(name) != 'undefined' && name.indexOf(searchText) != -1) {
+							//console.log("name=" + name + "searchText=" + searchText)
+							selectEntities.push(obj);
+						}
+					}
+
+					var topItem = ''
+					var bottomItem = ''
+					var len = selectEntities.length;
+					var topContainer = $(".dg-wrapper");
+					var bottomContainer = $(".slick-track");
+					if(len > 0) {
+						topContainer.empty();
+						bottomContainer.empty();
+						var slidesToShow = slickObj.slick('getSlidesToShow')
+
+						if(len < slidesToShow) {
+							slickObj.dots = false;
+							slickObj.arrows = false;
+							slickObj.slick('hideDotsAndArrow');
+						}
+					} else {
+						swal("警告", "没有找到 " + searchText + "对应的应用", "warning");
+						$("#searchParam").val('');
+						$("#searchParam").focus();
+						search();
+						return;
+					}
+					var slickDivArr = getSlickDiv(searchText);
+					for(var i = 0; i < len; ++i) {
+						obj = selectEntities[i];
+						topItem = '<a mosn = "1" href="JavaScript:void(0)" style= "cursor:default" ><img src="' + obj.icon + '" alt="' + obj.alias + '"  width="' + imgWidth + '" height="' + imgHeight + '" ><div>' + obj.alias + '</div></a>'
+						topContainer.append(topItem)
+						bottomContainer.append(slickDivArr[i])
+
+					}
+
+					var firstObj = selectEntities[0]
+					setFirstObjPro(firstObj);
+					ga.gallery('reinit');
+					searchPattern = 'part';
+                     
+				} else {
+
+					if(searchPattern == 'all') { //已经在全部模式下，没有必要再设置一下全部模式
+						return;
+					} else {
+
+						var topContainer = $(".dg-wrapper");
+						topContainer.empty();
+						var bottomContainer = $(".slick-track");
+						bottomContainer.empty();
+						var len = glabolData.length;
+						for(var i = 0; i < len; ++i) {
+							obj = glabolData[i];
+							topItem = '<a mosn = "1" href="JavaScript:void(0)"  ><img src="' + obj.icon + '" alt="' + obj.alias + '" width="481" height="300" ><div>' + obj.alias + '</div></a>'
+							topContainer.append(topItem);
+
+							bottomContainer.append(slickAllObjs[i]);
+						}
+						ga.gallery('reinit');
+						var slidesToShow = slickObj.slick('getSlidesToShow')
+						if(len > slidesToShow && (!slickObj.dots)) { //没有设置dots时，才设置dots
+							slickObj.dots = true;
+							slickObj.arrows = true;
+							slickObj.slick('buildDots').slick('updateDots').slick('initDotEvents').slick('buildArrows').slick('updateArrows').slick('initArrowEvents');
+						}
+						clearArray(slickAllObjs) //清空slick dom数组
+
+						searchPattern = 'all';
+					}
+				}
+				
+				resize(true);
+			}
+
+			function getSlickDiv(searchText) {
+				var obj;
+				var jObj;
+				var arr = [];
+				var size = slickAllObjs.length;
+				var selectCount = 0;
+				for(var i = 0; i < size; ++i) {
+					obj = slickAllObjs[i];
+					//console.log(obj)
+					jObj = $(obj);
+					if(jObj.find(".botomTitle span:last").text().indexOf(searchText) != -1) {
+						arr.push(jObj.get(0));
+						selectCount++;
+
+					}
+				}
+
+				return arr;
+			}
+
+			function copyArray(arr) {
+				return arr.slice();
+			}
+
+			function clearArray(arr) {
+				var size = arr.length;
+				for(var i = 0; i < size; ++i) {
+					delete arr[i];
+				}
+				arr.splice(0, size);
+				arr.length = 0;
+			}
+
+			function resize(isSearch) {
+				var reWidth = document.documentElement.clientWidth;
+				var reheight = document.documentElement.clientHeight;
+				var wFactor = 481 / 1349; //在1349 * 438 可视尺寸下 原来的宽/高 481*316
+				var hFactor = 316 / 438;
+				var hImgFactor = 300 / 316
+				var rWidth = reWidth * wFactor;
+				var rHeight = reheight * hFactor;
+
+				rHeight = rHeight - 165;
+				var a1 = navigator.userAgent;
+				var yesIE11 = a1.search(/Trident/i);
+				if(yesIE11 > 0) {
+					rWidth -= 5
+					imgWidth = rWidth - 1;
+				} else {
+					imgWidth = rWidth;
+				}
+				$(".dg-wrapper").css('width', (rWidth) + "px").css('height', (rHeight) + "px");
+				$(".dg-wrapper a").css('width', (rWidth + 1) + "px").css('height', (rHeight) + "px");
+
+				imgHeight = rHeight * hImgFactor
+				$(".dg-wrapper a img").each(function() {
+					$(this).attr('width', imgWidth + "px").attr('height', imgHeight + "px");
+				})
+
+				if(ga && (!isSearch)) {
+					var tr350Factor = 350 / 1349
+					var tr350Width = reWidth * tr350Factor;
+
+					var tr450Factor = 450 / 1349
+					var tr450Width = reWidth * tr450Factor;
+					$(".dg-left").css({
+						'-webkit-transform': 'translateX(-' + tr350Width + 'px) translateZ(-200px) rotateY(45deg)',
+						'-moz-transform': 'translateX(-' + tr350Width + 'px) translateZ(-200px) rotateY(45deg)',
+						'-o-transform': 'translateX(-' + tr350Width + 'px) translateZ(-200px) rotateY(45deg)',
+						'-ms-transform': 'translateX(-' + tr350Width + 'px) translateZ(-200px) rotateY(45deg)',
+						'transform': 'translateX(-' + tr350Width + 'px) translateZ(-200px) rotateY(45deg)'
+					})
+					$(".dg-right").css({
+						'-webkit-transform': 'translateX(' + tr350Width + 'px) translateZ(-200px) rotateY(-45deg)',
+						'-moz-transform': 'translateX(' + tr350Width + 'px) translateZ(-200px) rotateY(-45deg)',
+						'-o-transform': 'translateX(' + tr350Width + 'px) translateZ(-200px) rotateY(-45deg)',
+						'-ms-transform': 'translateX(' + tr350Width + 'px) translateZ(-200px) rotateY(-45deg)',
+						'transform': 'translateX(' + tr350Width + 'px) translateZ(-200px) rotateY(-45deg)'
+					})
+					$(".dg-left-out").css({
+						'-webkit-transform': 'translateX(-' + tr450Width + 'px) translateZ(-300px) rotateY(45deg)',
+						'-moz-transform': 'translateX(-' + tr450Width + 'px) translateZ(-300px) rotateY(45deg)',
+						'-o-transform': 'translateX(-' + tr450Width + 'px) translateZ(-300px) rotateY(45deg)',
+						'-ms-transform': 'translateX(-' + tr450Width + 'px) translateZ(-300px) rotateY(45deg)',
+						'transform': 'translateX(-' + tr450Width + 'px) translateZ(-300px) rotateY(45deg)'
+					})
+					$(".dg-right-out").css({
+						'-webkit-transform': 'translateX(' + tr450Width + 'px) translateZ(-300px) rotateY(-45deg)',
+						'-moz-transform': 'translateX(' + tr450Width + 'px) translateZ(-300px) rotateY(-45deg)',
+						'-o-transform': 'translateX(' + tr450Width + 'px) translateZ(-300px) rotateY(-45deg)',
+						'-ms-transform': 'translateX(' + tr450Width + 'px) translateZ(-300px) rotateY(-45deg)',
+						'transform': 'translateX(' + tr450Width + 'px) translateZ(-300px) rotateY(-45deg)'
+					})
+					ga.gallery('setClientWidth', reWidth);
+				}
+				var titleHeight = $("header").outerHeight();
+				var wrapperHeight = $(".dg-wrapper").outerHeight();
+				var slickHeight = $(".slick").outerHeight();
+				//console.log("reWidth=" + reWidth)
+				$(".panel-body").css("height", (reheight - parseInt(titleHeight) - parseInt(wrapperHeight) - parseInt(slickHeight) - 90) + "px")
+
+			}
+
+			function getColorByVal(value) {
+
+				return __amAvailColors[value];
+			}
+
+			function getAlarmColorByName(key) {
+				for(var i = 0; i < __alarmLevels.length; ++i) {
+					var obj = __alarmLevels[i]
+					var levelID = obj.levelID;
+					if(levelID == key) {
+						return obj.levelColor
+					}
+				}
+			}
+
+		</script>
+	</head>
+
+	<body onresize="resize()">
+		<div class="mycontainer">
+			<header>
+
+				<div class="leftPanel" style=""></div>
+				<div class="rightPanel" style="">
+					<input type="text" class="form-control " id='searchParam' style="">&nbsp;
+				</div>
+				<div class="contentArea " style="text-align: right;">
+					
+					<span class="containerTitle" >应用切换  <button class="btn btn-default" type="button" id='searchBtn' title="点击打开搜索框">
+                  	 <span class="glyphicon glyphicon-search" ></span>
+					</button>
+					</span>
+                    
+				</div>
+
+			</header>
+
+			<section id="dg-container" class="dg-container">
+				<div class="dg-wrapper">
+
+				</div>
+				<div id="mid" style="position:relative;width: 92%; height:80px;text-align: center;margin: auto;  margin-top: 15px; margin-bottom: 10px; z-index: 100px;" class="row">
+					
+				</div>
+				<div class="slick ">
+
+				</div>
+			</section>
+		</div>
+	</body>
+
+</html>
