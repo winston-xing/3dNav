@@ -2,11 +2,13 @@
 基于slick,jquery的3d导航框架
 
 ## 概述
-    这是一款简单的jquery 3d旋转轮播图效果。该轮播图基于slick和bootstrap网格系统，通过jquery和CSS3 transforms来制作3D旋转效果，炫酷实用；
+   这是一款简单的jquery 3d旋转轮播图效果。该轮播图基于slick和bootstrap网格系统，通过jquery和CSS3 transforms来制作3D旋转效果，炫酷实用；
 ## 效果
 ![](https://github.com/winston-xing/3dNav/raw/master/images/demo.png)  
 ## 浏览器支持
- IE10+,chrome50+,firefox40+
+ IE10+<br>
+ chrome50+<br>
+ firefox40+
 ## 类库
   bootstrap<br>
   fontawesome<br>
